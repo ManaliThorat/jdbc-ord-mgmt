@@ -1,10 +1,13 @@
 package lib;
 
 import org.junit.*;
-
+import org.junit.Test;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by manalit on 1/25/14.
@@ -80,15 +83,22 @@ public class OrderMgmtTest {
                 "\tREFERENCES product(prod_id);";
         boolean result7 = statement7.execute(createCustomerQuery7);
 
-
     }
     @After
     public void tearDown() throws Exception {
     }
     @Test
     public void testMain() throws Exception {
-
-
+        Statement statement = connection.createStatement();
+        String createCustomerQuery = "INSERT INTO orderMgmt.product(prod_name,unit_price) VALUES('Pen',10);";
+        int result = statement.executeUpdate(createCustomerQuery);
+        Statement statement1 = connection.createStatement();
+        String createCustomerQuery1 = "SELECT * FROM orderMgmt.product;";
+        ResultSet result1 = statement1.executeQuery(createCustomerQuery1);
+        while (result1.next()) {
+            assertEquals("Pen" , result1.getString(2));
+            assertEquals(10 , result1.getInt(3));
+        }
     }
 
 }
