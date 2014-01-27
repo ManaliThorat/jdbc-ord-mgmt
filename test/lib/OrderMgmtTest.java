@@ -22,17 +22,6 @@ public class OrderMgmtTest {
         Statement statement = connection.createStatement();
         String createCustomerQuery = "create schema orderMgmt";
         boolean result = statement.execute(createCustomerQuery);
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        Statement statement = connection.createStatement();
-        String createCustomerQuery = "drop schema orderMgmt;";
-        boolean result = statement.execute(createCustomerQuery);
-    }
-
-    @Before
-    public void setUp() throws Exception {
         Statement statement1 = connection.createStatement();
         String createCustomerQuery1 = "CREATE TABLE orderMgmt.product (\n" +
                 "\tprod_id INT PRIMARY KEY AUTO_INCREMENT,\n" +
@@ -82,13 +71,29 @@ public class OrderMgmtTest {
                 "\tADD CONSTRAINT orderIems_prodId_fk FOREIGN KEY(prod_id)\n" +
                 "\tREFERENCES product(prod_id);";
         boolean result7 = statement7.execute(createCustomerQuery7);
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        Statement statement = connection.createStatement();
+        String createCustomerQuery = "drop schema orderMgmt;";
+        boolean result = statement.execute(createCustomerQuery);
+
+    }
+
+    @Before
+    public void setUp() throws Exception {
+
 
     }
     @After
     public void tearDown() throws Exception {
+
+
+
     }
     @Test
-    public void testMain() throws Exception {
+    public void testInsertQuery() throws Exception {
         Statement statement = connection.createStatement();
         String createCustomerQuery = "INSERT INTO orderMgmt.product(prod_name,unit_price) VALUES('Pen',10);";
         int result = statement.executeUpdate(createCustomerQuery);
@@ -99,6 +104,15 @@ public class OrderMgmtTest {
             assertEquals("Pen" , result1.getString(2));
             assertEquals(10 , result1.getInt(3));
         }
+    }
+    @Test
+    public void testDeleteQuery() throws Exception {
+        Statement statement = connection.createStatement();
+        String createCustomerQuery3 = "delete from orderMgmt.product where prod_name = 'Pen';";
+        int result3 = statement.executeUpdate(createCustomerQuery3);
+        String createCustomerQuery4 = "SELECT * FROM orderMgmt.product;";
+        ResultSet result4 = statement.executeQuery(createCustomerQuery4);
+        assertEquals(0 , result4.getRow());
     }
 
 }
